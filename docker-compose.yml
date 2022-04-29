@@ -1,0 +1,21 @@
+version: '2'
+
+services:
+  comments_app:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    command: bash -c "alembic upgrade head && python main.py"
+    env_file:
+      - .env
+    network_mode: host
+    restart: always
+    depends_on:
+      - db
+
+  db:
+    image: postgres:13-alpine
+    ports:
+      - "5432:5432"
+    env_file:
+      - .env
